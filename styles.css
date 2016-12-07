@@ -1,0 +1,30 @@
+#wrapper{
+	width: 90%;
+	max-width: 512px;
+	height: 100px;
+	margin: auto;
+}
+
+#wrapper h1 {
+	text-align: center;
+	font-family: arial;
+}
+
+#header{
+	width: 100%;
+	background-color: #ababab;
+	clear: both;
+}
+
+#header-left{
+	float: left;
+	clear: left;
+	background-color: red;
+	color: white;
+}
+#game{
+	margin: auto;
+	text-align: center;
+	width: 100%;
+	display: block;
+}
