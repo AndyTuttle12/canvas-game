@@ -5,19 +5,153 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 
 </head>
-<body>
+<body class="center">
 <div id="wrapper">
 	<div id="Header">
-		<h1>Goblin Slayer</h1>
-		<div id="header-left">
-			Content
+		<h1>Goblin Slayer</h1><p>(kind of...)</p>
+		<div id="header-middle">
+			<button id="start" onclick="startGame();">Start Game</button>
+			<button id="player" onclick="newPlayer();">New Player</button>
+			<input id="player-name" type="text" placeholder="Player Name">
+			<div id="score">
+				Score: <span></span>
+			</div>
+			<div id="hi-score">
+				Highscore: <span></span>
+			</div>
 		</div>
-		<div id="header-right">
-			
+		<div id="header-lower">
+			<div id="header-left">
+				<p>Time Played: <span id=timer>--</span></p>
+				
+				
+			</div>
+			<div id="header-right">
+				<p id="deaths">
+					Hits: --  
+				</p>
+				<div id="health">
+
+				</div>
+			</div>
 		</div>
 	</div>
-	<div id="game">
+	
 		<script type="text/javascript">
+		// Life bar start with 3 hearts full.
+			var life = [];
+			var lifeBar;
+			
+			
+			for(var i = 2; i >= 0; i--){
+				var heart = new Heart()
+				life.push(heart);				
+				lifeBar = '<img src="' + heart.src + '">';		
+				var divEl = document.createElement('div');
+				divEl.innerHTML = lifeBar;
+				divEl.className = "health-row";
+				document.getElementById('health').appendChild(divEl);
+			}
+
+			
+			function Heart(){
+				this.value = 2;
+				this.src = "heart.gif";
+			}
+			var heartIndex = life.length-1;
+				
+
+			if (life[heartIndex].value == 1) {
+				console.log("heartIndex: 2, value: 1");
+				// life[heartIndex].src = "half-heart.gif";
+				var heart = new Heart(1, "half-heart.gif");
+				life[heartIndex].splice(heartIndex, 1, heart);
+				lifeBar = '<img src="' + heart.src + '">';
+				var divEl = document.createElement('div');
+				divEl.innerHTML = lifeBar;
+				divEl.className = "health-row";
+				document.getElementById('health').appendChild(divEl);
+			}
+			if (life[heartIndex].value == 0) {
+				console.log("heartIndex: 2, value: 0");
+				// life[heartIndex].src = "empty-heart.gif";
+				var heart = new Heart(0, "empty-heart.gif");
+				life[heartIndex].splice(heartIndex, 1, heart);
+				lifeBar = '<img src="' + heart.src + '">';
+				var divEl = document.createElement('div');
+				divEl.innerHTML = lifeBar;
+				divEl.className = "health-row";
+				document.getElementById('health').appendChild(divEl);
+
+				heartIndex--;
+			}
+			if (life[heartIndex].value < 0) {
+				heartIndex--;
+			}
+		
+
+			// 	document.getElementById('health').innerHTML = heart.src;
+			
+
+			// If new heart container, UNSHIFT array once for new heart.
+
+			// Max life is 12 life or 6 hearts.
+
+
+			// Logic to decide how to remove and Then, add life.
+			// I made the heartIndex counter and shifted as values of each heart decreased. Just need to add the heart gifs^^^
+
+
+
+
+
+			function Player(name){
+				this.name = name;
+				this.highscore = 0;
+			}
+			var playerArray = [];
+			// Player.prototype.highscore = 0;
+
+			function newPlayer(){
+				var playerNameDiv = document.getElementById('player-name');
+				var playerName = playerNameDiv.value;
+				playerArray.push(new Player(playerName));
+				console.log(playerArray);
+				document.getElementById("start").style.display = "block";
+				document.getElementById("player").style.display = "none";
+				document.getElementById("player-name").style.display = "none";
+			}
+
+			function startGame(){
+				gameOn = true;
+				// gameStart++;
+				// gameStart = Date.now();
+				// gameEnd = Date.now() + 300000;
+
+				timerInterval = setInterval(updateTimer, 100);
+				document.getElementById("start").style.display = "none";
+			}
+
+			function updateTimer(){
+				gameStart++;
+				// var newNow = Date.now();
+				// var timeDifference = gameEnd - newNow / 1000;
+				// if(timeDifference < 0){
+				// 	clearInterval(timerInterval);
+				// 	gameOn = false;
+				// 	timeDifference = 0;
+				// 	document.getElementById('timer').innerHTML = "Game Over!";
+				// }else{
+				document.getElementById('timer').innerHTML = (gameStart/10).toFixed(1) + " seconds";
+				// }
+			}
+
+			var gameStart = 0;
+			var gameEnd = 0;
+			var timerInterval;
+			
+
+
 			// Create canvas tag with js.
 			var canvas = document.createElement('canvas');
 			// Create context for (Methods and properties)
@@ -35,6 +169,10 @@
 			var speedModifier = .5; 
 
 			var monsterSpeedModifier = 4.29;
+
+			var playerHits = 0;
+
+			var gameOn = false;
 
 			// Make the sword
 			var sword = new Image();
@@ -161,6 +299,7 @@
 			});
 			// this is where we will update the hero's position based on keysDown info.
 			function update(){
+				
 				//User pressedright at some point
 				if(32 in keysDown){
 					console.log("space!");
@@ -188,31 +327,6 @@
 					}		
 				}
 
-				// Jittery Monster Movement
-				// var chkDirection = Math.floor(Math.random() * 4);
-				// if(chkDirection == 0){
-				// 	if(monsterLocation.x <= 450){
-				// 		(monsterLocation.x += (20 * monsterSpeedModifier)) * (Math.floor((Math.random() * 50) + 28));
-				// 	}				
-				// }
-				// if(chkDirection == 1){
-				// 	if(monsterLocation.x >= 25){
-				// 		(monsterLocation.x -= (20 * monsterSpeedModifier)) * (Math.floor((Math.random() * 50) + 28));
-				// 	}				
-				// }
-				// if(chkDirection == 2){
-				// 	if(monsterLocation.y <= 410){
-				// 		(monsterLocation.y += (20 * monsterSpeedModifier)) * (Math.floor((Math.random() * 50) + 28));
-				// 	}				
-				// }
-				// if(chkDirection == 3){
-				// 	if(monsterLocation.y >= 25){
-				// 		(monsterLocation.y -= (20 * monsterSpeedModifier)) * (Math.floor((Math.random() * 50) + 28));
-				// 	}				
-				// }
-
-
-
 				if(
 					(heroLocation.x <= monsterLocation.x + 32)
 					&& (heroLocation.y <= monsterLocation.y + 32)
@@ -220,13 +334,21 @@
 					&& (monsterLocation.y <= heroLocation.y + 32)
 				){
 					// console.log("Hero is left of monster");
+					playerHits++;
+					document.getElementById('deaths').innerHTML = "Hits: " + playerHits;
+					// Decriment Health
+					// heart at life[0] subtracts 1
+					if(life[heartIndex].value > 0){
+						life[heartIndex].value--;
+					}else if(life[heartIndex].value <= 0){
+						heartIndex--;
+						life[heartIndex].value--;
+					}
+					// set new monsterLocation
 					var random = Math.random() * 450;
 					var random2 = Math.random() * 400;
 					monsterLocation.x = random;
 					monsterLocation.y = random2;
-					heroLocation.x = 240;
-					heroLocation.y = 226;
-
 				}else{
 					// console.log("Hero is not close enough");
 				}
@@ -260,6 +382,27 @@
 
 			}
 
+			// This is where I will create timers
+			// First I need a timer for time played counting up until collision.
+			
+			/* Do the function, call every 20 milliseconds*/
+			// startTime=new Date();
+
+			// drawFinalScore();
+			
+			// // turn on the ticker and get a reference to the object
+			// var theInterval=setInterval(playGame, 20);
+
+			// // turn off the ticker
+			// clearInterval(theInterval);
+			
+
+			// Then, add a timer for levels - every 30 sec add new goblin.
+
+
+
+
+
 			// This will handle the animation of the sword and the logic of hitting the monster.
 			function animateSword(){
 
@@ -290,8 +433,11 @@
 
 			// Keep at the bottom!
 			function draw(){
-				update();
-				monsterUpdate();
+				if(gameOn){
+					update();
+					monsterUpdate();
+				}
+				
 				// Put backgroundImage on context at x = 0, y= 0
 				context.drawImage(backgroundImage,0,0);
 				ctx.drawImage(hero,heroLocation.x,heroLocation.y);
@@ -302,7 +448,6 @@
 
 			draw();
 		</script>
-	</div>
 	
 </div>
 </body>
