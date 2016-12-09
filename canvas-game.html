@@ -9,23 +9,27 @@
 <div id="wrapper">
 	<div id="Header">
 		<img id="splash" src="ZeldaIntro.png">
-		<!-- <h1>Link???</h1><p>(kind of...)</p> -->
+		<div id="highestScorers">
+			<h1>Highest Scores</h1>
+			<p id="highestArray">--</p>
+			<img src="hyrule-crest.png" alt="">
+		</div>
+
 		<div id="header-middle">
 			<button id="start" onclick="startGame();">Start Game</button>
 			<button id="player" onclick="newPlayer();">START</button>
 			<input id="player-name" type="text" placeholder="Player Name">
-			<div >
-				Score: <span id="score">--</span>
-			</div>
-			<div >
-				Highscore: <span id="hi-score">--</span>
+			<div id="header-center">
+				<p>Score: <span id="score">--</span></p>
+				<p>Time Played: <span id=timer>--</span></p>
+				<p>Highscore: <span id="hi-score">--</span></p>
 			</div>
 		</div>
 		<div id="header-lower">
 			<div id="header-left">
-				<p>Time Played: <span id=timer>--</span></p>
+				
 				<div id="rupees">
-				<img src="rupy.gif" alt=""> --
+				<img src="rupy.gif" alt=""><span id="rupee-counter">--</span>
 				</div>				
 			</div>
 			<div id="header-right">
@@ -40,23 +44,73 @@
 	</div>
 	
 		<script type="text/javascript">
-		// Life bar start with 3 hearts full.
-			var life = [];
-			var lifeBar;
-			
-			
-			for(var i = 0; i <= 2; i++){
-				var heart = new Heart()
-				life.push(heart);				
-				lifeBar = '<img id="' + i + '" src="' + heart.src + '">';		
-				var divEl = document.createElement('div');
-				divEl.innerHTML = lifeBar;
-				divEl.className = "health-row";
-				document.getElementById('health').appendChild(divEl);
-				// console.log(life);
+
+			document.getElementById("highestScorers").className = "splashHidden";
+			document.getElementById("splash").className = "splashShow";
+
+
+		// Reset for new game
+			function reset(){
+				document.getElementById("highestScorers").className = "splashHidden";
+				document.getElementById("splash").className = "splashShow";
+				document.getElementById('player-name').innerHTML = "Player Name";
+				document.getElementById('score').innerHTML = "--";
+				document.getElementById('timer').innerHTML = "--";
+				document.getElementById('rupee-counter').innerHTML = " --";
+				// setHearts();
+
 			}
 
 
+		// Life bar start with 3 hearts full.
+			var life = [];
+			var lifeBar;
+			var playerNumber = 0;
+			function setHearts(){
+				life = [];
+
+				// if(playerNumber = 1){
+				// 	var healthList = document.getElementById('health');
+				// 	healthList.removeChild(healthList.childNodes[0]);
+				// }
+
+				for(var i = 0; i <= 2; i++){
+					var heart = new Heart()
+					life.push(heart);				
+					lifeBar = '<img id="' + i + '" src="' + heart.src + '">';		
+					var divEl = document.createElement('div');
+					divEl.innerHTML = lifeBar;
+					divEl.className = "health-row";
+					var healthList = document.getElementById('health');			
+					document.getElementById('health').appendChild(divEl);
+					healthList.removeChild(healthList.childNodes[0]);
+					console.log(life);
+				}
+				playerNumber++;
+				console.log(playerNumber);
+
+				
+				heartIndex = life.length-1;
+
+				function Heart(value = 2, src = "heart.gif"){
+				this.value = value;
+				this.src = src;				
+				}
+			}
+
+			for(var i = 0; i <= 2; i++){
+					var heart = new Heart()
+					life.push(heart);				
+					lifeBar = '<img id="' + i + '" src="' + heart.src + '">';		
+					var divEl = document.createElement('div');
+					divEl.innerHTML = lifeBar;
+					divEl.className = "health-row";
+					document.getElementById('health').appendChild(divEl);
+					console.log(life[heartIndex]);
+				}
+				playerNumber++;
+				console.log(playerNumber);
+			// setHearts();
 			function Heart(value = 2, src = "heart.gif"){
 				this.value = value;
 				this.src = src;				
@@ -105,6 +159,11 @@
 				gameOn = false;
 				document.getElementById("player").style.display = "inline-block";
 				document.getElementById("player-name").style.display = "inline-block";
+				for(var i = 0; i < highestScores.length; i++){
+					document.getElementById('highestArray').innerHTML = highestScores[i] + " -- " + highestScores[i].highscore;
+				}
+				document.getElementById("highestScorers").className = "splashShow";
+				setHearts();
 				
 
 			}
@@ -145,6 +204,7 @@
 				document.getElementById("player-name").style.display = "none";
 				var currentPlayerIndex = playerArray.length-1;
 				playerArray[currentPlayerIndex].score = gameStart;
+				reset();
 			}
 
 
@@ -161,7 +221,7 @@
 					document.getElementById("splash").className = "splashHidden";
 				}
 			}
-
+			var newHighScore = false;
 			function updateTimer(){
 				gameStart++;
 				if(gameOn == false){
@@ -174,6 +234,7 @@
 				if (playerArray[currentPlayerIndex].score >= playerArray[currentPlayerIndex].highscore){
 					playerArray[currentPlayerIndex].highscore = playerArray[currentPlayerIndex].score;
 					highScore = playerArray[currentPlayerIndex].highscore;
+					newHighScore = true;
 					// console.log(playerArray[currentPlayerIndex].score);
 
 				}
@@ -188,9 +249,15 @@
 				document.getElementById('timer').innerHTML = (gameStart/10).toFixed(1) + " seconds";
 				document.getElementById('score').innerHTML = playerArray[currentPlayerIndex].score;
 				document.getElementById('hi-score').innerHTML = highScore;
+				
+				if(newHighScore && gameOn == false){
+					highestScores.push(playerArray[currentPlayerIndex]);
+					console.log(highestScores);
+					console.log("added to highestScores");
+				}
 				// }
 			}
-
+			var highestScores = [];
 			var gameStart = 0;
 			var gameEnd = 0;
 			var timerInterval;
@@ -221,6 +288,8 @@
 			var playerHits = 0;
 
 			var gameOn = false;
+
+
 
 			// Make the sword
 			// var sword = new Image();

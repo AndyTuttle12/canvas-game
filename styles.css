@@ -15,6 +15,7 @@
 	max-width: 512px;
 	height: 100%;
 	margin: auto;
+	margin-top: 20px;
 	background-color: #eaeaea;
 	border-radius: 10px 10px 0 0;
 }
@@ -38,6 +39,12 @@
 	padding-top: 20px;
 	color: #fff;
 	border-radius: 10px 10px 0 0;
+}
+
+#header-center{
+	margin: auto;
+	width: 200px;
+	text-align: left;
 }
 
 #header-lower{
@@ -120,7 +127,7 @@
 	margin-bottom: -1000px;
 	margin-left: -256px;
 	/* left: 584px; */
-	top: 150px;
+	top: 170px;
 }
 
 .splashHidden{
@@ -132,7 +139,7 @@
 	height: 30px;
 	/* width: 180px; */ 
 	padding: 10px 10px 0 10px;
-	margin: -10px 0px -10px;
+	margin: 40px 0px -10px;
 	float: left;
 	border: 2px solid #d9d049;
 	border-bottom: none;
@@ -153,4 +160,16 @@
 	margin: -5px 0px 5px;
 	border: 2px solid #333;
 	border-radius: 3px;
+}
+
+#highestScorers{
+	position: absolute;
+	color: #E1C300;
+	text-emphasis-color: #000;
+	height: 480px;
+	width: 512px;
+	margin-bottom: -1000px;
+	/* margin-left: -256px; */
+	background-color: #222;
+	top: 170px;
 }
