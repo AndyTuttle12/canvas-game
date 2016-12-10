@@ -2,6 +2,11 @@
 	font-family: arial;
 }
 
+/* ul{ 
+	list-style-type: none !important;
+	display: inline; */
+/* }	 */
+
 .center{
 	text-align: center;
 	margin: auto;
@@ -172,4 +177,17 @@
 	/* margin-left: -256px; */
 	background-color: #222;
 	top: 170px;
+}
+
+#highestArray{
+	width: 40%;
+	margin: auto;
+}
+
+#highestArrayName{
+	float: left;
+}
+
+#highestArrayScore{
+	float: right;
 }

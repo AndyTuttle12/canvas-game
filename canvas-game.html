@@ -12,7 +12,11 @@
 		<audio src="http://zeldauniverse.s3.amazonaws.com/soundtracks/legendofzeldaost/01%20-%20Intro.mp3" type="audio/mpeg" autobuffer autoplay autoloop loop></audio>
 		<div id="highestScorers">
 			<h1>Highest Scores</h1>
-			<p id="highestArray"><span id="highestArrayName"> - </span> -- <span id="highestArrayScore"> - </span></p>
+			<div id="highestArray">
+				<ul id="scoreList">
+					<li class="scoreLine"><span id="highestArrayName0"> </span> <span id="highestArrayScore"> </span></li>
+				</ul>
+			</div>
 			<img src="hyrule-crest.png" alt="">
 		</div>
 
@@ -178,10 +182,9 @@
 				this.highscore = 0;
 			}
 			
-
 			var playerArray = [];
 			var currentPlayerIndex;
-			// Player.prototype.highscore = 0;
+			
 
 			function newPlayer(){
 				var playerNameDiv = document.getElementById('player-name');
@@ -193,6 +196,8 @@
 				document.getElementById("player-name").style.display = "none";
 				currentPlayerIndex = playerArray.length-1;
 				playerArray[currentPlayerIndex].score = gameStart;
+				gameStart = 0;
+				playerScore = 0;
 				reset();
 			}
 
@@ -203,11 +208,11 @@
 				// gameStart++;
 				// gameStart = Date.now();
 				// gameEnd = Date.now() + 300000;
-
 				timerInterval = setInterval(updateTimer, 100);
 				document.getElementById("start").style.display = "none";
 				if(gameOn){
 					document.getElementById("splash").className = "splashHidden";
+
 				}
 			}
 			var newHighScore = false;
@@ -219,29 +224,25 @@
 				playerArray[currentPlayerIndex].score = gameStart;
 				playerScore = playerArray[currentPlayerIndex].score;
 				// console.log(playerScore);
-				if (playerArray[currentPlayerIndex].score >= playerArray[currentPlayerIndex].highscore){
-					playerArray[currentPlayerIndex].highscore = playerArray[currentPlayerIndex].score;
-					highScore = playerArray[currentPlayerIndex].highscore;
+				if (playerArray[currentPlayerIndex].score > storedHighScore){
+					playerArray[currentPlayerIndex].highscore = storedHighScore;
+					storedHighScore = playerArray[currentPlayerIndex].score;
 					newHighScore = true;
 					// console.log(playerArray[currentPlayerIndex].score);
-
+					
 				}
-				// var newNow = Date.now();
-				// var timeDifference = gameEnd - newNow / 1000;
-				// if(timeDifference < 0){
-				// 	clearInterval(timerInterval);
-				// 	gameOn = false;
-				// 	timeDifference = 0;
-				// 	document.getElementById('timer').innerHTML = "Game Over!";
-				// }else{
-				document.getElementById('timer').innerHTML = (gameStart/10).toFixed(1) + " seconds";
+				
+				document.getElementById('timer').innerHTML = ((gameStart/10)).toFixed(1) + " seconds";
 				document.getElementById('score').innerHTML = playerArray[currentPlayerIndex].score;
-				document.getElementById('hi-score').innerHTML = highScore;
+				document.getElementById('hi-score').innerHTML = storedHighScore;
 				
 				if(newHighScore == true){
-					console.log(playerArray);
-					highestScores = playerArray.slice(0,1);
+					// console.log(playerArray);
+					highestScores = playerArray.slice(0,playerArray.length);
 					highestScores.sort(compare);
+
+					console.log("storedHighScore = " + storedHighScore);	
+					document.getElementById('hi-score').innerHTML = storedHighScore;				
 					// console.log(highestScores);
 					// console.log("added to highestScores");
 				}
@@ -262,8 +263,9 @@
 			var gameEnd = 0;
 			var timerInterval;
 			var playerScore = 0;
-			var highScore = 0;
 			var blinking = false;
+			var storedHighScore = 100;
+			var scoreDisplay;
 			
 
 
@@ -271,16 +273,22 @@
 			function gameOver(){
 				console.log("GAME OVER");
 				gameOn = false;
-				gameStart = 0;
 				gameEnd = 0;
 				timerInterval;
-				playerScore = 0;
+				storedHighScore--;
 				document.getElementById("player").style.display = "inline-block";
 				document.getElementById("player-name").style.display = "inline-block";
 				for(var i = 0; i < highestScores.length; i++){
+					///////////
+					scoreDisplay = '<span id="highestArrayName' + [i] + '"> </span> - <span id="highestArrayScore' + [i] + '"> </span>';		
+					var lineEl = document.createElement('li');
+					lineEl.innerHTML = scoreDisplay;
+					lineEl.className = "scoreLine";		
+					document.getElementById('scoreList').appendChild(lineEl);
+					///////////
 					// document.getElementById('highestArray').innerHTML = highestScores[i.name, i.highscore];
-					document.getElementById('highestArrayName').innerHTML = highestScores[i].name;
-					document.getElementById('highestArrayScore').innerHTML = (highestScores[i].highscore+1);
+					document.getElementById('highestArrayName' + [i]).innerHTML = highestScores[i].name;
+					document.getElementById('highestArrayScore' + [i]).innerHTML = (highestScores[i].highscore)+1;
 				}
 				document.getElementById("highestScorers").className = "splashShow";
 
