@@ -198,6 +198,7 @@
 				playerArray[currentPlayerIndex].score = gameStart;
 				gameStart = 0;
 				playerScore = 0;
+				rupeeCount = 0;
 				reset();
 			}
 
@@ -241,7 +242,7 @@
 					highestScores = playerArray.slice(0,playerArray.length);
 					highestScores.sort(compare);
 
-					console.log("storedHighScore = " + (storedHighScore+1));	
+					// console.log("storedHighScore = " + (storedHighScore+1));	
 					document.getElementById('hi-score').innerHTML = (storedHighScore+1);				
 					// console.log(highestScores);
 					// console.log("added to highestScores");
@@ -266,6 +267,7 @@
 			var blinking = false;
 			var storedHighScore = 100;
 			var scoreDisplay;
+			var rupeeCount = 0;
 			
 
 
@@ -352,6 +354,34 @@
 				newY:100
 			}
 
+			// function to make a new rupee
+			var rupee = new Image();
+			rupee.src = "5-rupees.gif";
+			rupee.id = "aRupee";
+			rupee.className = "rupeesClass";
+			rupee.width = 10;
+			rupee.height = 20;
+			var rupeeLocation = {
+				x:400,
+				y:400
+			}
+			console.log(rupee);
+
+			if(
+				(heroLocation.x <= rupeeLocation.x + 40)
+				&& (heroLocation.y <= rupeeLocation.y + 40)
+				&& (rupeeLocation.x <= heroLocation.x + 40)
+				&& (rupeeLocation.y <= heroLocation.y + 40)
+			){
+				// rupeeCount = rupeeCount + 5;
+				// document.getElementById('rupee-counter').innerHTML = " - " + rupeeCount;
+				// context.clearRect(rupeeLocation.x, rupeeLocation.y, rupee.width, rupee.height);
+				console.log("rupee!!");
+			}
+				
+				// document.getElementById("aRupee").className = " splashHidden";
+				
+
 			
 
 			///////////////////////////
@@ -365,7 +395,7 @@
 			ctx.shadowBlur = 10;
 			ctx.shadowColor = '#000';
 
-			// CANVAS MATHS
+			// CANVAS MATH
 			var x = heroLocation.x,
 			    y = heroLocation.y,
 			    radius = 100,
@@ -405,7 +435,7 @@
 			      animate(circum * curr / 10 + start);
 			    }); 
 			  }
-			  animateSword();
+			  // animateSword();
 			}
 
 
@@ -453,10 +483,7 @@
 			function update(){
 				
 				//User pressedright at some point
-				if(32 in keysDown){
-					console.log("space!");
-					// animate();
-				}
+				
 					
 				if(39 in keysDown || 68 in keysDown){
 					hero.src = "link_right.png";
@@ -483,6 +510,25 @@
 					}		
 				}
 
+				if((32 in keysDown) && (hero.src == "link_right.png")){
+					console.log("right thrust!");
+				}
+
+				if((32 in keysDown) && (hero.src == "link_left.png")){
+					console.log("left thrust!");
+				}
+
+				if(32 in keysDown && hero.src == "link_up.png"){
+					console.log("up thrust!");
+				}
+
+				if(32 in keysDown && hero.src == "link_down.png"){
+					console.log("down thrust!");
+				}
+
+				
+
+
 				if(
 					(heroLocation.x <= monsterLocation.x + 32)
 					&& (heroLocation.y <= monsterLocation.y + 32)
@@ -501,7 +547,7 @@
 					if(life[heartIndex].value > 0){
 						life[heartIndex].value--;
 					}else if(life[heartIndex].value <= 0){
-						console.log("decriment heartIndex");
+						// console.log("decriment heartIndex");
 						heartIndex --;
 						life[heartIndex].value--;
 					}
@@ -604,7 +650,7 @@
 				// Put backgroundImage on context at x = 0, y= 0
 				context.drawImage(backgroundImage,0,0);
 				ctx.drawImage(hero,heroLocation.x,heroLocation.y);
-				// ctx.drawImage(sword,swordLocation.x,swordLocation.y);
+				context.drawImage(rupee,rupeeLocation.x,rupeeLocation.y);
 				ctx.drawImage(monster,monsterLocation.x,monsterLocation.y);
 				requestAnimationFrame(draw);
 				// var frequency = 200;
