@@ -2,10 +2,9 @@
 	font-family: arial;
 }
 
-/* ul{ 
-	list-style-type: none !important;
-	display: inline; */
-/* }	 */
+ul{ 
+	list-style-type: none;
+}	
 
 .center{
 	text-align: center;
@@ -190,4 +189,8 @@
 
 #highestArrayScore{
 	float: right;
+}
+
+#scoreList{
+	padding: 0px;
 }

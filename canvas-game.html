@@ -14,7 +14,7 @@
 			<h1>Highest Scores</h1>
 			<div id="highestArray">
 				<ul id="scoreList">
-					<li class="scoreLine"><span id="highestArrayName0"> </span> <span id="highestArrayScore"> </span></li>
+					<li class="scoreLine"><span id="highestArrayName0"> </span> <span id="highestArrayScore0"> </span></li>
 				</ul>
 			</div>
 			<img src="hyrule-crest.png" alt="">
@@ -241,8 +241,8 @@
 					highestScores = playerArray.slice(0,playerArray.length);
 					highestScores.sort(compare);
 
-					console.log("storedHighScore = " + storedHighScore);	
-					document.getElementById('hi-score').innerHTML = storedHighScore;				
+					console.log("storedHighScore = " + (storedHighScore+1));	
+					document.getElementById('hi-score').innerHTML = (storedHighScore+1);				
 					// console.log(highestScores);
 					// console.log("added to highestScores");
 				}
@@ -275,7 +275,7 @@
 				gameOn = false;
 				gameEnd = 0;
 				timerInterval;
-				storedHighScore--;
+				storedHighScore;
 				document.getElementById("player").style.display = "inline-block";
 				document.getElementById("player-name").style.display = "inline-block";
 				for(var i = 0; i < highestScores.length; i++){
@@ -283,7 +283,8 @@
 					scoreDisplay = '<span id="highestArrayName' + [i] + '"> </span> - <span id="highestArrayScore' + [i] + '"> </span>';		
 					var lineEl = document.createElement('li');
 					lineEl.innerHTML = scoreDisplay;
-					lineEl.className = "scoreLine";		
+					lineEl.className = "scoreLine";	
+					lineEl.id = "scoreLine" + [i];	
 					document.getElementById('scoreList').appendChild(lineEl);
 					///////////
 					// document.getElementById('highestArray').innerHTML = highestScores[i.name, i.highscore];
