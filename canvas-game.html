@@ -9,6 +9,7 @@
 <div id="wrapper">
 	<div id="Header">
 		<img id="splash" src="ZeldaIntro.png">
+		<img id="dangerousAlone" src="dangerous-alone.png">
 		<audio src="http://zeldauniverse.s3.amazonaws.com/soundtracks/legendofzeldaost/01%20-%20Intro.mp3" type="audio/mpeg" autobuffer autoplay autoloop loop></audio>
 		<div id="highestScorers">
 			<h1>Highest Scores</h1>
@@ -52,6 +53,7 @@
 
 			document.getElementById("highestScorers").className = "splashHidden";
 			document.getElementById("splash").className = "splashShow";
+			document.getElementById("dangerousAlone").className = "splashHidden";
 
 
 		// Reset for new game
@@ -270,6 +272,24 @@
 			var rupeeCount = 0;
 			
 
+			function levels(){
+				if (gameStart <= 30){
+					gameOn = true;
+				}
+
+				if (gameStart == 30){
+					gameOn = false;
+					setTimeout(function(){gameOn = true;}, 5000);
+					document.getElementById("dangerousAlone").className = "splash";
+				}
+
+				if (gameStart == 40){
+					gameOn = true;
+					document.getElementById("dangerousAlone").className = "splashHidden";
+				}
+
+			}
+
 
 			// gameOver saves the current time, score, compares to highscore, records highscore, sets gameOn to false and displays new player entry
 			function gameOver(){
@@ -367,22 +387,18 @@
 			}
 			console.log(rupee);
 
-			if(
-				(heroLocation.x <= rupeeLocation.x + 40)
-				&& (heroLocation.y <= rupeeLocation.y + 40)
-				&& (rupeeLocation.x <= heroLocation.x + 40)
-				&& (rupeeLocation.y <= heroLocation.y + 40)
-			){
-				// rupeeCount = rupeeCount + 5;
-				// document.getElementById('rupee-counter').innerHTML = " - " + rupeeCount;
-				// context.clearRect(rupeeLocation.x, rupeeLocation.y, rupee.width, rupee.height);
-				console.log("rupee!!");
-			}
+			
 				
 				// document.getElementById("aRupee").className = " splashHidden";
 				
 
 			
+
+			///////////////////////////
+			//Sprite animations
+			
+
+
 
 			///////////////////////////
 
@@ -395,48 +411,48 @@
 			ctx.shadowBlur = 10;
 			ctx.shadowColor = '#000';
 
-			// CANVAS MATH
-			var x = heroLocation.x,
-			    y = heroLocation.y,
-			    radius = 100,
-			    circum = Math.PI * 2,
-			    start = Math.PI / 2, // Start position (top)
-			    finish = 100, // Finish (in %)
-			    curr = 0; // Current position (in %)
+			// // CANVAS MATH
+			// var x = heroLocation.x,
+			//     y = heroLocation.y,
+			//     radius = 100,
+			//     circum = Math.PI * 2,
+			//     start = Math.PI / 2, // Start position (top)
+			//     finish = 100, // Finish (in %)
+			//     curr = 0; // Current position (in %)
 
-			// CANVAS ANIMATION
+			// // CANVAS ANIMATION
 
-			// Enables browser-decided smooth animation (60fps)
-			var raf =
-			    window.requestAnimationFrame ||
-			    window.mozRequestAnimationFrame ||
-			    window.webkitRequestAnimationFrame ||
-			    window.msRequestAnimationFrame;
-			window.requestAnimationFrame = raf;
+			// // Enables browser-decided smooth animation (60fps)
+			// var raf =
+			//     window.requestAnimationFrame ||
+			//     window.mozRequestAnimationFrame ||
+			//     window.webkitRequestAnimationFrame ||
+			//     window.msRequestAnimationFrame;
+			// window.requestAnimationFrame = raf;
 
-			// Animate function
-			function animate(draw_to) {
-			  // Clear off the canvas
-			  ctx.clearRect(0, 0, canvas.width, canvas.height);
-			  // ctx.clearRect(0, 0, width, height);
-			  // Start over
-			  ctx.beginPath();
-			  // arc(x, y, radius, startAngle, endAngle, anticlockwise)
-			  // Re-draw from the very beginning each time so there isn't tiny line spaces between each section (the browser paint rendering will probably be smoother too)
-			  ctx.arc(x, y, radius, start, draw_to, false);
-			  // Draw
-			  ctx.stroke();
-			  // Increment percent
-			  curr++;
-			  // Animate until end
-			  if (curr < finish + 1) {
-			    // Recursive repeat this function until the end is reached
-			    requestAnimationFrame(function () {
-			      animate(circum * curr / 10 + start);
-			    }); 
-			  }
-			  // animateSword();
-			}
+			// // Animate function
+			// function animate(draw_to) {
+			//   // Clear off the canvas
+			//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+			//   // ctx.clearRect(0, 0, width, height);
+			//   // Start over
+			//   ctx.beginPath();
+			//   // arc(x, y, radius, startAngle, endAngle, anticlockwise)
+			//   // Re-draw from the very beginning each time so there isn't tiny line spaces between each section (the browser paint rendering will probably be smoother too)
+			//   ctx.arc(x, y, radius, start, draw_to, false);
+			//   // Draw
+			//   ctx.stroke();
+			//   // Increment percent
+			//   curr++;
+			//   // Animate until end
+			//   if (curr < finish + 1) {
+			//     // Recursive repeat this function until the end is reached
+			//     requestAnimationFrame(function () {
+			//       animate(circum * curr / 10 + start);
+			//     }); 
+			//   }
+			//   // animateSword();
+			// }
 
 
 			///////////////////////////
@@ -526,7 +542,21 @@
 					console.log("down thrust!");
 				}
 
-				
+				if(
+				(heroLocation.x <= rupeeLocation.x + 20)
+				&& (heroLocation.y <= rupeeLocation.y + 30)
+				&& (rupeeLocation.x <= heroLocation.x + 20)
+				&& (rupeeLocation.y <= heroLocation.y + 30)
+			){
+				rupeeCount += 5;
+				rupeeLocation.x = Math.floor(Math.random() * 0);
+				rupeeLocation.y = Math.floor(Math.random() * 0);
+				document.getElementById('rupee-counter').innerHTML = " - " + rupeeCount;
+				context.clearRect(rupeeLocation.x, rupeeLocation.y, rupee.width, rupee.height);
+				setInterval(rupeeLocation.x = Math.floor(Math.random() * 480), rupeeLocation.y = Math.floor(Math.random() * 450), 5000);
+					
+				console.log("rupee!!");
+			}
 
 
 				if(
@@ -645,6 +675,7 @@
 				if(gameOn){
 					update();
 					monsterUpdate();
+					levels();
 				}
 				
 				// Put backgroundImage on context at x = 0, y= 0
